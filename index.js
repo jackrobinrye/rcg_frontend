@@ -36,10 +36,9 @@ function renderPlayers(playersData) {
 // releaseButton.setAttribute("data-pokemon-id", `${pokemon.id}`)
 
 function renderPlayer(playerData) {
-    console.log(playerData)
-    //create payer div and add to the DOM
+    //create playerDiv
     let playerDiv = document.createElement("div");
-    //create and add name (h2) to the div
+    //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
     playerName.innerHTML = playerData.attributes.name 
     playerDiv.append(playerName)
@@ -48,22 +47,31 @@ function renderPlayer(playerData) {
     addCharacterButton.innerHTML = "Add New Character"
     playerDiv.append(addCharacterButton)
     //render characters
-    renderCharacters(playerData.attributes.characters)
+    playerDiv.append(renderCharacters(playerData.attributes.characters))
 
-
+    //add playerDiv to the body
     document.querySelector("body").append(playerDiv)
 }
 
 function renderCharacters(charactersData) {
+    //create a charactersDiv
+    let charactersDiv = document.createElement("div")
     charactersData.forEach(character => {
-        console.log(character)
-        // renderCharacter(character)
+        charactersDiv.append(renderCharacter(character))
     })
+    return charactersDiv
 }
 
 function renderCharacter(characterData) {
     //create a character div
-    //add name (h3) to the div
+    characterDiv = document.createElement("div")
+    //create and add name (h3) to the div
+    characterName = document.createElement("h3")
+    characterName.innerHTML = characterData.name
+    characterDiv.append(characterName)
     //create a 3x4 table
     //populate the table with the character data
+
+    //add the final stuff to the playerDiv
+    return characterDiv
 }
