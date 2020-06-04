@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(PLAYERS_URL)
         .then(response => response.json())
         .then(players => {
+            //create title and add to DOM
+            let title = document.createElement("h1")
+            title.innerText = "Random Character Generator"
+            document.querySelector("body").append(title)
+
             renderPlayers(players.data)
         })
     }
@@ -32,15 +37,27 @@ function renderPlayers(playersData) {
 
 function renderPlayer(playerData) {
     console.log(playerData)
-    
     //create payer div and add to the DOM
-    //add name (h2) to the div
+    let playerDiv = document.createElement("div");
+    //create and add name (h2) to the div
+    let playerName = document.createElement("h2");
+    playerName.innerHTML = playerData.attributes.name 
+    playerDiv.append(playerName)
+    //create and add addCharacter button to the div
+    let addCharacterButton = document.createElement("button")
+    addCharacterButton.innerHTML = "Add New Character"
+    playerDiv.append(addCharacterButton)
     //render characters
+    renderCharacters(playerData.attributes.characters)
+
+
+    document.querySelector("body").append(playerDiv)
 }
 
 function renderCharacters(charactersData) {
     charactersData.forEach(character => {
-        renderCharacter(character)
+        console.log(character)
+        // renderCharacter(character)
     })
 }
 
