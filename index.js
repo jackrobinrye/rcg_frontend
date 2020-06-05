@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 )
 
+
+
+
+
+
 function renderPlayers(playersData) {
     // console.log(playersData)
     playersData.forEach(player => {
@@ -28,6 +33,11 @@ function renderPlayers(playersData) {
         renderPlayer(player);
     });
 }
+
+
+
+
+
 
 function renderPlayer(playerData) {
     //create playerDiv
@@ -75,7 +85,6 @@ function renderPlayer(playerData) {
         fetch("http://localhost:3000/api/characters", addConfigObj)
                 .then(resp => resp.json())
                 .then(character => {
-                    console.log(character)
                     if (character.message) {
                         alert(character.message)
                     } 
@@ -99,6 +108,11 @@ function renderPlayer(playerData) {
     document.querySelector("body").append(playerDiv)
 }
 
+
+
+
+
+
 function renderCharacters(charactersData) {
     //create a charactersDiv
     let charactersDiv = document.createElement("div")
@@ -115,6 +129,10 @@ function renderCharacters(charactersData) {
     return charactersDiv
 }
 
+
+
+
+
 function renderCharacter(characterData) {
     //create a characterDiv
     characterDiv = document.createElement("div")
@@ -130,33 +148,65 @@ function renderCharacter(characterData) {
 
     //TEMPORARY: list off each attribute
     for (let [key, value] of Object.entries(characterData)) {
-        attribute = document.createElement("p")
-        attribute.innerHTML = `${key}: ${value}`
-        characterDiv.append(attribute)
-    }
-
-    //create a table
-    const tbl = document.createElement("table")
-
-    //create the header
-    let cap = document.createElement("caption")
-    cap.innerHTML = characterData.name
-
-    //create the table body
-    let body = document.createElement("tbody")
-    
-    //populate the table with the character data
-    for (let i = 0; i < 13; i++) {
-        for (let [key, value] of Object.entries(characterData)) {
-            if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
-                console.log(`${key} HELLO HELLO HELLO`)
-            }
-            else {
-                console.log(`${key}: ${value}`)
-            }
+        if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
         }
-        
+        else {
+            attribute = document.createElement("p")
+            attribute.innerHTML = `${key}: ${value}`
+            characterDiv.append(attribute)
+        }
     }
+
+    // //create a table
+    // const tbl = document.createElement("table")
+
+    // //create the header
+    // let cap = document.createElement("caption")
+    // cap.innerHTML = characterData.name
+    // tbl.append(cap)
+
+    // //create the table body
+    // let tBody = document.createElement("tbody")
+    
+    // //populate the table with the character data
+    // // let cData = [{"key":"val"}, {"key2":"val2"}, 
+    // // {"key3":"val3"}, {"key8":"val8"},
+    // // {"key4":"val4"}, {"key9":"val9"},
+    // // {"key5":"val5"}, {"key10":"val10"},
+    // // {"key6":"val6"}, {"key11":"val11"}, 
+    // // {"key7":"val7"}, {"key12":"val12"}]
+    // let cData = []
+    // for (key in characterData){
+    //     cData.push({key:characterData[key]})
+    //     // debugger
+    // }
+
+    // for (let i = 0; i < 4; i++) {
+    //     let tr = document.createElement("tr")
+    //         for (let j = i*3; j<i*3+3; j++){
+    //             for (key in cData[j]){
+    //                 if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
+    //                     console.log("hello")
+    //                 }
+    //                 else {
+    //                     value = cData[j][key]
+    //                     let td = document.createElement("td")
+    //                     td.innerHTML = `${key}: ${value}` 
+    //                     console.log(`${key}: ${value}`)
+    //                     tr.append(td)
+    //                 }
+    //             }
+    //         }   
+    //         tBody.append(tr)
+    //     // }
+    // }
+    // tbl.append(tBody)
+    // characterDiv.append(tbl)
+
+
+
+    //build row method
+    
 
 
     //add everything
