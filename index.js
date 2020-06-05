@@ -159,62 +159,42 @@ function renderCharacter(characterData, div) {
     characterName.innerHTML = characterData.name
     characterDiv.append(characterName)
 
-    //TEMPORARY: list off each attribute
-    for (let [key, value] of Object.entries(characterData)) {
-        if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
-        }
-        else {
-            attribute = document.createElement("p")
-            attribute.innerHTML = `${key}: ${value}`
-            characterDiv.append(attribute)
-        }
-    }
-
     // //create a table
-    // const tbl = document.createElement("table")
-
-    // //create the header
-    // let cap = document.createElement("caption")
-    // cap.innerHTML = characterData.name
-    // tbl.append(cap)
+    const tbl = document.createElement("table")
 
     // //create the table body
-    // let tBody = document.createElement("tbody")
+    let tBody = document.createElement("tbody")
     
-    // //populate the table with the character data
-    // // let cData = [{"key":"val"}, {"key2":"val2"}, 
-    // // {"key3":"val3"}, {"key8":"val8"},
-    // // {"key4":"val4"}, {"key9":"val9"},
-    // // {"key5":"val5"}, {"key10":"val10"},
-    // // {"key6":"val6"}, {"key11":"val11"}, 
-    // // {"key7":"val7"}, {"key12":"val12"}]
-    // let cData = []
-    // for (key in characterData){
-    //     cData.push({key:characterData[key]})
-    //     // debugger
-    // }
+    let cData = []
+    for (key in characterData){
+        cData.push({[key]: characterData[key]})
+    }
 
-    // for (let i = 0; i < 4; i++) {
-    //     let tr = document.createElement("tr")
-    //         for (let j = i*3; j<i*3+3; j++){
-    //             for (key in cData[j]){
-    //                 if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
-    //                     console.log("hello")
-    //                 }
-    //                 else {
-    //                     value = cData[j][key]
-    //                     let td = document.createElement("td")
-    //                     td.innerHTML = `${key}: ${value}` 
-    //                     console.log(`${key}: ${value}`)
-    //                     tr.append(td)
-    //                 }
-    //             }
-    //         }   
-    //         tBody.append(tr)
-    //     // }
-    // }
-    // tbl.append(tBody)
-    // characterDiv.append(tbl)
+    for (let i = 0; i < 5; i++) {
+        let tr = document.createElement("tr")
+            for (let j = i*3; j<i*3+3; j++){
+                for (key in cData[j]){
+                    if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
+                    }
+                    else if(key === "cclass"){
+                        value = cData[j][key]
+                        let td = document.createElement("td")
+                        td.innerHTML = `class: ${value}`
+                        tr.append(td)
+                    }
+                    else {
+                        value = cData[j][key]
+                        let td = document.createElement("td")
+                        td.innerHTML = `${key}: ${value}`
+                        tr.append(td)
+                    }
+                }
+            }   
+            tBody.append(tr)
+        // }
+    }
+    tbl.append(tBody)
+    characterDiv.append(tbl)
 
 
 
