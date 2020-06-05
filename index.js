@@ -29,12 +29,6 @@ function renderPlayers(playersData) {
     });
 }
 
-// have a release button for each pokemon
-// let releaseButton = document.createElement("button");
-// releaseButton.innerHTML = "Release"
-// releaseButton.classList.add("release")
-// releaseButton.setAttribute("data-pokemon-id", `${pokemon.id}`)
-
 function renderPlayer(playerData) {
     //create playerDiv
     let playerDiv = document.createElement("div");
@@ -42,7 +36,7 @@ function renderPlayer(playerData) {
     //add attributes to playerDiv
     playerDiv.classList.add("player")
     playerDiv.setAttribute("player-id", `${playerData.id}`)
-
+    
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
     playerName.innerHTML = playerData.attributes.name 
@@ -50,11 +44,56 @@ function renderPlayer(playerData) {
     
     //render characters
     playerDiv.append(renderCharacters(playerData.attributes.characters))
-
-    //create and add addCharacter button to the div
+    
+    //BUTTON\\
+    //create addCharacter button
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
+    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
+
+    //create event listener for the addCharacter button
+    addCharacterButton.addEventListener("click", (event) => {
+
+        //prevent default
+        event.preventDefault
+        // debugger
+
+        // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
+        const addConfigObj = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                player_id: event.target.getAttribute('button-player-id')
+                // trainer_id: event.target.dataset.trainerId
+            })
+        }
+
+        //
+        fetch("http://localhost:3000/api/characters", addConfigObj)
+                .then(resp => resp.json())
+                .then(character => {
+                    console.log(character)
+                    if (character.message) {
+                        alert(character.message)
+                    } 
+                    else {
+                        renderCharacter(character)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        
+    });
+
+
+    //add addCharacter button to the div
     playerDiv.append(addCharacterButton)
+
+
 
     //add playerDiv to the body
     document.querySelector("body").append(playerDiv)
