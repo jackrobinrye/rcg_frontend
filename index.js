@@ -44,17 +44,16 @@ function renderPlayer(playerData) {
     let playerDiv = document.createElement("div");
 
     //add attributes to playerDiv
-    playerDiv.classList.add("player")
+    playerDiv.classList.add(`player-id-${playerData.id}`)
     playerDiv.setAttribute("player-id", `${playerData.id}`)
     
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
     playerName.innerHTML = playerData.attributes.name 
     playerDiv.append(playerName)
-    
-    //render characters
-    playerDiv.append(renderCharacters(playerData.attributes.characters))
-    
+
+
+
     //BUTTON\\
     //create addCharacter button
     let addCharacterButton = document.createElement("button")
@@ -89,7 +88,10 @@ function renderPlayer(playerData) {
                         alert(character.message)
                     } 
                     else {
-                        renderCharacter(character)
+                        const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
+                        renderCharacter(character, div)
+                        console.log(character)
+                        console.log("")
                     }
                 })
                 .catch((error) => {
@@ -97,10 +99,21 @@ function renderPlayer(playerData) {
                 })
         
     });
-
-
+     
     //add addCharacter button to the div
     playerDiv.append(addCharacterButton)
+    //\\BUTTON//
+
+
+
+    
+    //render characters
+    renderCharacters(playerData.attributes.characters, playerDiv)
+    
+
+
+
+
 
 
 
@@ -113,7 +126,7 @@ function renderPlayer(playerData) {
 
 
 
-function renderCharacters(charactersData) {
+function renderCharacters(charactersData, div) {
     //create a charactersDiv
     let charactersDiv = document.createElement("div")
 
@@ -122,7 +135,7 @@ function renderCharacters(charactersData) {
 
     //loop through characters and render each individual character
     charactersData.forEach(character => {
-        charactersDiv.append(renderCharacter(character))
+        renderCharacter(character, div)
     })
 
     //return the charactersDiv to be appended to the playerDiv above
@@ -133,7 +146,7 @@ function renderCharacters(charactersData) {
 
 
 
-function renderCharacter(characterData) {
+function renderCharacter(characterData, div) {
     //create a characterDiv
     characterDiv = document.createElement("div")
 
@@ -212,5 +225,5 @@ function renderCharacter(characterData) {
     //add everything
 
     //add the final stuff to the playerDiv
-    return characterDiv
+    div.append(characterDiv)
 }
