@@ -38,16 +38,23 @@ function renderPlayers(playersData) {
 function renderPlayer(playerData) {
     //create playerDiv
     let playerDiv = document.createElement("div");
+
+    //add attributes to playerDiv
+    playerDiv.classList.add("player")
+    playerDiv.setAttribute("player-id", `${playerData.id}`)
+
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
     playerName.innerHTML = playerData.attributes.name 
     playerDiv.append(playerName)
+    
+    //render characters
+    playerDiv.append(renderCharacters(playerData.attributes.characters))
+
     //create and add addCharacter button to the div
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
     playerDiv.append(addCharacterButton)
-    //render characters
-    playerDiv.append(renderCharacters(playerData.attributes.characters))
 
     //add playerDiv to the body
     document.querySelector("body").append(playerDiv)
@@ -56,19 +63,39 @@ function renderPlayer(playerData) {
 function renderCharacters(charactersData) {
     //create a charactersDiv
     let charactersDiv = document.createElement("div")
+
+    //give charactersDiv attributes
+    charactersDiv.classList.add("characters")
+
+    //loop through characters and render each individual character
     charactersData.forEach(character => {
         charactersDiv.append(renderCharacter(character))
     })
+
+    //return the charactersDiv to be appended to the playerDiv above
     return charactersDiv
 }
 
 function renderCharacter(characterData) {
-    //create a character div
+    //create a characterDiv
     characterDiv = document.createElement("div")
+
+    //give the characterDiv attributes
+    characterDiv.classList.add("character")
+    characterDiv.setAttribute("character-id", `${characterData.id}`)
+
     //create and add name (h3) to the div
     characterName = document.createElement("h3")
     characterName.innerHTML = characterData.name
     characterDiv.append(characterName)
+
+    //TEMPORARY: list off each attribute
+    for (let [key, value] of Object.entries(characterData)) {
+        attribute = document.createElement("p")
+        attribute.innerHTML = `${key}: ${value}`
+        characterDiv.append(attribute)
+    }
+
     //create a 3x4 table
     //populate the table with the character data
 
