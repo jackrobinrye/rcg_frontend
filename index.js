@@ -135,8 +135,31 @@ function renderCharacter(characterData) {
         characterDiv.append(attribute)
     }
 
-    //create a 3x4 table
+    //create a table
+    const tbl = document.createElement("table")
+
+    //create the header
+    let cap = document.createElement("caption")
+    cap.innerHTML = characterData.name
+
+    //create the table body
+    let body = document.createElement("tbody")
+    
     //populate the table with the character data
+    for (let i = 0; i < 13; i++) {
+        for (let [key, value] of Object.entries(characterData)) {
+            if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
+                console.log(`${key} HELLO HELLO HELLO`)
+            }
+            else {
+                console.log(`${key}: ${value}`)
+            }
+        }
+        
+    }
+
+
+    //add everything
 
     //add the final stuff to the playerDiv
     return characterDiv
