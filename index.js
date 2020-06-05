@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 )
 
+
+
+
+
+
 function renderPlayers(playersData) {
     // console.log(playersData)
     playersData.forEach(player => {
@@ -29,38 +34,99 @@ function renderPlayers(playersData) {
     });
 }
 
-// have a release button for each pokemon
-// let releaseButton = document.createElement("button");
-// releaseButton.innerHTML = "Release"
-// releaseButton.classList.add("release")
-// releaseButton.setAttribute("data-pokemon-id", `${pokemon.id}`)
+
+
+
+
 
 function renderPlayer(playerData) {
     //create playerDiv
     let playerDiv = document.createElement("div");
 
     //add attributes to playerDiv
-    playerDiv.classList.add("player")
+    playerDiv.classList.add(`player-id-${playerData.id}`)
     playerDiv.setAttribute("player-id", `${playerData.id}`)
-
+    
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
     playerName.innerHTML = playerData.attributes.name 
     playerDiv.append(playerName)
-    
-    //render characters
-    playerDiv.append(renderCharacters(playerData.attributes.characters))
 
-    //create and add addCharacter button to the div
+
+
+    //BUTTON\\
+    //create addCharacter button
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
+    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
+
+    //create event listener for the addCharacter button
+    addCharacterButton.addEventListener("click", (event) => {
+
+        //prevent default
+        event.preventDefault
+        // debugger
+
+        // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
+        const addConfigObj = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                player_id: event.target.getAttribute('button-player-id')
+                // trainer_id: event.target.dataset.trainerId
+            })
+        }
+
+        //
+        fetch("http://localhost:3000/api/characters", addConfigObj)
+                .then(resp => resp.json())
+                .then(character => {
+                    if (character.message) {
+                        alert(character.message)
+                    } 
+                    else {
+                        const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
+                        renderCharacter(character, div)
+                        console.log(character)
+                        console.log("")
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        
+    });
+     
+    //add addCharacter button to the div
     playerDiv.append(addCharacterButton)
+    //\\BUTTON//
+
+
+
+    
+    //render characters
+    renderCharacters(playerData.attributes.characters, playerDiv)
+    
+
+
+
+
+
+
 
     //add playerDiv to the body
     document.querySelector("body").append(playerDiv)
 }
 
-function renderCharacters(charactersData) {
+
+
+
+
+
+function renderCharacters(charactersData, div) {
     //create a charactersDiv
     let charactersDiv = document.createElement("div")
 
@@ -69,14 +135,18 @@ function renderCharacters(charactersData) {
 
     //loop through characters and render each individual character
     charactersData.forEach(character => {
-        charactersDiv.append(renderCharacter(character))
+        renderCharacter(character, div)
     })
 
     //return the charactersDiv to be appended to the playerDiv above
     return charactersDiv
 }
 
-function renderCharacter(characterData) {
+
+
+
+
+function renderCharacter(characterData, div) {
     //create a characterDiv
     characterDiv = document.createElement("div")
 
@@ -91,14 +161,69 @@ function renderCharacter(characterData) {
 
     //TEMPORARY: list off each attribute
     for (let [key, value] of Object.entries(characterData)) {
-        attribute = document.createElement("p")
-        attribute.innerHTML = `${key}: ${value}`
-        characterDiv.append(attribute)
+        if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
+        }
+        else {
+            attribute = document.createElement("p")
+            attribute.innerHTML = `${key}: ${value}`
+            characterDiv.append(attribute)
+        }
     }
 
-    //create a 3x4 table
-    //populate the table with the character data
+    // //create a table
+    // const tbl = document.createElement("table")
+
+    // //create the header
+    // let cap = document.createElement("caption")
+    // cap.innerHTML = characterData.name
+    // tbl.append(cap)
+
+    // //create the table body
+    // let tBody = document.createElement("tbody")
+    
+    // //populate the table with the character data
+    // // let cData = [{"key":"val"}, {"key2":"val2"}, 
+    // // {"key3":"val3"}, {"key8":"val8"},
+    // // {"key4":"val4"}, {"key9":"val9"},
+    // // {"key5":"val5"}, {"key10":"val10"},
+    // // {"key6":"val6"}, {"key11":"val11"}, 
+    // // {"key7":"val7"}, {"key12":"val12"}]
+    // let cData = []
+    // for (key in characterData){
+    //     cData.push({key:characterData[key]})
+    //     // debugger
+    // }
+
+    // for (let i = 0; i < 4; i++) {
+    //     let tr = document.createElement("tr")
+    //         for (let j = i*3; j<i*3+3; j++){
+    //             for (key in cData[j]){
+    //                 if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
+    //                     console.log("hello")
+    //                 }
+    //                 else {
+    //                     value = cData[j][key]
+    //                     let td = document.createElement("td")
+    //                     td.innerHTML = `${key}: ${value}` 
+    //                     console.log(`${key}: ${value}`)
+    //                     tr.append(td)
+    //                 }
+    //             }
+    //         }   
+    //         tBody.append(tr)
+    //     // }
+    // }
+    // tbl.append(tBody)
+    // characterDiv.append(tbl)
+
+
+
+    //build row method
+    
+
+
+    //add everything
 
     //add the final stuff to the playerDiv
-    return characterDiv
+    div.append(characterDiv)
 }
