@@ -15,6 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
             title.innerText = "Random Character Generator"
             document.querySelector("body").append(title)
 
+            //create createPlayer div and button and add to DOM
+            let createPlayerButtonDiv = document.createElement("div")
+
+            let createPlayerButton = document.createElement("button")
+            createPlayerButton.innerHTML = "Add Player"
+
+            //create event listener for the createPlayerButton 
+            createPlayerButton.addEventListener("click", summonForm(createPlayerButtonDiv));
+
+            createPlayerButtonDiv.append(createPlayerButton)
+            document.querySelector("body").append(createPlayerButtonDiv)
+
+            
+
+
             renderPlayers(players.data)
         })
     }
@@ -196,14 +211,167 @@ function renderCharacter(characterData, div) {
     tbl.append(tBody)
     characterDiv.append(tbl)
 
+    //add the final stuff to the playerDiv
+    div.append(characterDiv)
+}
 
 
-    //build row method
+//summonForm 
+function summonForm(div){
+    let form = document.createElement("form")
+    form.setAttribute('method',"post");
+    form.setAttribute('action',"submit.php");
+
+    let nameInput = document.createElement("input"); //input element, text
+    nameInput.setAttribute('type',"text");
+    nameInput.setAttribute('name',"name");
+    nameInput.innerText = "Name"
+    
+    let genderInput = document.createElement("input"); //input element, text
+    genderInput.setAttribute('type',"text");
+    genderInput.setAttribute('gender',"gender");
+
+    let ageInput = document.createElement("input"); //input element, text
+    ageInput.setAttribute('type',"number");
+    ageInput.setAttribute('age',"age");
+
+    let dmInput = document.createElement("checkbox"); //input element, text
+    dmInput.setAttribute('type',"text");
+    dmInput.setAttribute('name',"username");
+
+    let submitButton = document.createElement("input"); //input element, submit button
+    submitButton.setAttribute('type',"submit");
+    submitButton.setAttribute('value',"Submit");
+
+    debugger
+
+    //add event listener to submit button
+
+    // submitButton.addEventListener("click", addNewPlayer)
+
+
+    // function addNewPlayer() {
+    //     const addPlayerConfigObj = {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Accept": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             // player_id: event.target.getAttribute('button-player-id')
+    //             // trainer_id: event.target.dataset.trainerId
+    //         })
+    //     }
+
+    //     //
+    // fetch("http://localhost:3000/api/characters", addPlayerConfigObj)
+    //     .then(resp => resp.json())
+    //     .then(player => {
+    //         if (player.message) {
+    //             alert(player.message)
+    //         } 
+    //         else {
+    //             console.log(player)
+    //             // renderNewPlayer()
+    //         }
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //     })
+    // }
+
+    form.append(nameInput);
+    form.append(genderInput);
+    form.append(ageInput);
+    form.append(dmInput);
+    form.append(submitButton);
+    div.append(form)
+
+}
+
+
+
+
+
+
+function renderNewPlayer(name, gender, age, dm) {
+    //create playerDiv
+    let playerDiv = document.createElement("div");
+
+    //add attributes to playerDiv
+    playerDiv.classList.add(`player-id-${playerData.id}`)
+    playerDiv.setAttribute("player-id", `${playerData.id}`)
+    
+    //create and add playerName (h2) to the div
+    let playerName = document.createElement("h2");
+    playerName.innerHTML = playerData.attributes.name 
+    playerDiv.append(playerName)
+
+
+
+    //BUTTON\\
+    //create addCharacter button
+    let addCharacterButton = document.createElement("button")
+    addCharacterButton.innerHTML = "Add New Character"
+    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
+
+    //create event listener for the addCharacter button
+    addCharacterButton.addEventListener("click", (event) => {
+
+        //prevent default
+        event.preventDefault
+        // debugger
+
+        // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
+        const addConfigObj = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                player_id: event.target.getAttribute('button-player-id')
+                // trainer_id: event.target.dataset.trainerId
+            })
+        }
+
+        //
+        fetch("http://localhost:3000/api/characters", addConfigObj)
+                .then(resp => resp.json())
+                .then(character => {
+                    if (character.message) {
+                        alert(character.message)
+                    } 
+                    else {
+                        const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
+                        renderCharacter(character, div)
+                        console.log(character)
+                        console.log("")
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        
+    });
+     
+    //add addCharacter button to the div
+    playerDiv.append(addCharacterButton)
+    //\\BUTTON//
+
+
+
+    
+    //render characters
+    renderCharacters(playerData.attributes.characters, playerDiv)
     
 
 
-    //add everything
 
-    //add the final stuff to the playerDiv
-    div.append(characterDiv)
+
+
+
+
+    //add playerDiv to the body
+    document.querySelector("body").append(playerDiv)
 }
