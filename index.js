@@ -225,6 +225,7 @@ function summonForm(div){
     let nameInput = document.createElement("input"); //input element, text
     nameInput.setAttribute('type',"text");
     nameInput.setAttribute('name',"name");
+    nameInput.innerText = "Name"
     
     let genderInput = document.createElement("input"); //input element, text
     genderInput.setAttribute('type',"text");
@@ -246,8 +247,82 @@ function summonForm(div){
 
     //add event listener to submit button
 
-    submitButton.addEventListener("click", addNewPlayer)
-    function addNewPlayer() {
+    // submitButton.addEventListener("click", addNewPlayer)
+
+
+    // function addNewPlayer() {
+    //     const addPlayerConfigObj = {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Accept": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             // player_id: event.target.getAttribute('button-player-id')
+    //             // trainer_id: event.target.dataset.trainerId
+    //         })
+    //     }
+
+    //     //
+    // fetch("http://localhost:3000/api/characters", addPlayerConfigObj)
+    //     .then(resp => resp.json())
+    //     .then(player => {
+    //         if (player.message) {
+    //             alert(player.message)
+    //         } 
+    //         else {
+    //             console.log(player)
+    //             // renderNewPlayer()
+    //         }
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //     })
+    // }
+
+    form.append(nameInput);
+    form.append(genderInput);
+    form.append(ageInput);
+    form.append(dmInput);
+    form.append(submitButton);
+    div.append(form)
+
+}
+
+
+
+
+
+
+function renderNewPlayer(name, gender, age, dm) {
+    //create playerDiv
+    let playerDiv = document.createElement("div");
+
+    //add attributes to playerDiv
+    playerDiv.classList.add(`player-id-${playerData.id}`)
+    playerDiv.setAttribute("player-id", `${playerData.id}`)
+    
+    //create and add playerName (h2) to the div
+    let playerName = document.createElement("h2");
+    playerName.innerHTML = playerData.attributes.name 
+    playerDiv.append(playerName)
+
+
+
+    //BUTTON\\
+    //create addCharacter button
+    let addCharacterButton = document.createElement("button")
+    addCharacterButton.innerHTML = "Add New Character"
+    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
+
+    //create event listener for the addCharacter button
+    addCharacterButton.addEventListener("click", (event) => {
+
+        //prevent default
+        event.preventDefault
+        // debugger
+
+        // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
         const addConfigObj = {
             method: "POST",
             headers: {
@@ -255,7 +330,7 @@ function summonForm(div){
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                // player_id: event.target.getAttribute('button-player-id')
+                player_id: event.target.getAttribute('button-player-id')
                 // trainer_id: event.target.dataset.trainerId
             })
         }
@@ -268,19 +343,35 @@ function summonForm(div){
                         alert(character.message)
                     } 
                     else {
-                        
+                        const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
+                        renderCharacter(character, div)
+                        console.log(character)
+                        console.log("")
                     }
                 })
                 .catch((error) => {
                     console.log(error)
                 })
-    }
+        
+    });
+     
+    //add addCharacter button to the div
+    playerDiv.append(addCharacterButton)
+    //\\BUTTON//
 
 
-    form.append(nameInput);
-    form.append(genderInput);
-    form.append(ageInput);
-    form.append(dmInput);
-    form.append(submitButton);
-    div.append(form)
+
+    
+    //render characters
+    renderCharacters(playerData.attributes.characters, playerDiv)
+    
+
+
+
+
+
+
+
+    //add playerDiv to the body
+    document.querySelector("body").append(playerDiv)
 }
