@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
             createPlayerButton.innerHTML = "Add Player"
 
             //create event listener for the createPlayerButton 
-            createPlayerButton.addEventListener("click", summonForm(createPlayerButtonDiv));
+            createPlayerButton.addEventListener("click", event => {
+                summonForm(event.target.parentElement)});
 
             createPlayerButtonDiv.append(createPlayerButton)
             document.querySelector("body").append(createPlayerButtonDiv)
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+//RENDER ALL PLAYERS
 function renderPlayers(playersData) {
     // console.log(playersData)
     playersData.forEach(player => {
@@ -53,7 +54,7 @@ function renderPlayers(playersData) {
 
 
 
-
+//RENDER SINGLE PLAYER
 function renderPlayer(playerData) {
     //create playerDiv
     let playerDiv = document.createElement("div");
@@ -69,7 +70,7 @@ function renderPlayer(playerData) {
 
 
 
-    //BUTTON\\
+    //BUTTON FOR ADD CHARACTER WITHIN RENDER PLAYER\\
     //create addCharacter button
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
@@ -122,13 +123,9 @@ function renderPlayer(playerData) {
 
 
     
-    //render characters
+    //RENDER ALL CHARACTERS METHOD CALL
     renderCharacters(playerData.attributes.characters, playerDiv)
     
-
-
-
-
 
 
 
@@ -140,7 +137,7 @@ function renderPlayer(playerData) {
 
 
 
-
+//RENDER ALL CHARACTERS DEFINITION
 function renderCharacters(charactersData, div) {
     //create a charactersDiv
     let charactersDiv = document.createElement("div")
@@ -160,7 +157,7 @@ function renderCharacters(charactersData, div) {
 
 
 
-
+//RENDER SINGLE CHARACTER
 function renderCharacter(characterData, div) {
     //create a characterDiv
     characterDiv = document.createElement("div")
@@ -230,62 +227,73 @@ function summonForm(div){
     let genderInput = document.createElement("input"); //input element, text
     genderInput.setAttribute('type',"text");
     genderInput.setAttribute('gender',"gender");
-
+    genderInput.innerHTML = "Gender"
+    
     let ageInput = document.createElement("input"); //input element, text
     ageInput.setAttribute('type',"number");
     ageInput.setAttribute('age',"age");
+    ageInput.innerHTML = "Age"
 
-    let dmInput = document.createElement("checkbox"); //input element, text
-    dmInput.setAttribute('type',"text");
+    var dmInput = document.createElement("INPUT");
+    dmInput.setAttribute("type", "checkbox")
     dmInput.setAttribute('name',"username");
 
     let submitButton = document.createElement("input"); //input element, submit button
     submitButton.setAttribute('type',"submit");
     submitButton.setAttribute('value',"Submit");
 
-    debugger
+    // debugger
 
     //add event listener to submit button
+//!!!!!!!!!!!!!!!!THIS IS WHERE I'M WORKING CURRENTLY
+    submitButton.addEventListener("click", (event) => {
+        // debugger
 
-    // submitButton.addEventListener("click", addNewPlayer)
+        event.preventDefault
 
+        const addPlayerConfigObj = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                // player_id: event.target.getAttribute('button-player-id')
+                name: event.target.parentElement.childNodes[0].value,
+                gender: event.target.parentElement.childNodes[1].value,
+                age: event.target.parentElement.childNodes[2].value,
+                dm: event.target.parentElement.childNodes[3].value
 
-    // function addNewPlayer() {
-    //     const addPlayerConfigObj = {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Accept": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             // player_id: event.target.getAttribute('button-player-id')
-    //             // trainer_id: event.target.dataset.trainerId
-    //         })
-    //     }
+            })
+        }
 
-    //     //
-    // fetch("http://localhost:3000/api/characters", addPlayerConfigObj)
-    //     .then(resp => resp.json())
-    //     .then(player => {
-    //         if (player.message) {
-    //             alert(player.message)
-    //         } 
-    //         else {
-    //             console.log(player)
-    //             // renderNewPlayer()
-    //         }
-    //     })
-    //     .catch((error) => {
-    //         console.log(error)
-    //     })
-    // }
+        //
+        fetch("http://localhost:3000/api/players", addPlayerConfigObj)
+            .then(resp => resp.json())
+            .then(player => {
+                if (player.message) {
+                    alert(player.message)
+                } 
+                else {
+                    // debugger
+                    console.log(player)
+                    // renderNewPlayer()
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
 
-    form.append(nameInput);
-    form.append(genderInput);
-    form.append(ageInput);
-    form.append(dmInput);
-    form.append(submitButton);
-    div.append(form)
+            
+        })
+        
+        form.append(nameInput);
+        form.append(genderInput);
+        form.append(ageInput);
+        form.append(dmInput);
+        form.append(submitButton);
+        div.append(form)
+
 
 }
 
@@ -364,13 +372,6 @@ function renderNewPlayer(name, gender, age, dm) {
     
     //render characters
     renderCharacters(playerData.attributes.characters, playerDiv)
-    
-
-
-
-
-
-
 
     //add playerDiv to the body
     document.querySelector("body").append(playerDiv)
