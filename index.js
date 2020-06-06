@@ -242,6 +242,41 @@ function summonForm(div){
     submitButton.setAttribute('type',"submit");
     submitButton.setAttribute('value',"Submit");
 
+    debugger
+
+    //add event listener to submit button
+
+    submitButton.addEventListener("click", addNewPlayer)
+    function addNewPlayer() {
+        const addConfigObj = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                // player_id: event.target.getAttribute('button-player-id')
+                // trainer_id: event.target.dataset.trainerId
+            })
+        }
+
+        //
+        fetch("http://localhost:3000/api/characters", addConfigObj)
+                .then(resp => resp.json())
+                .then(character => {
+                    if (character.message) {
+                        alert(character.message)
+                    } 
+                    else {
+                        
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+    }
+
+
     form.append(nameInput);
     form.append(genderInput);
     form.append(ageInput);
