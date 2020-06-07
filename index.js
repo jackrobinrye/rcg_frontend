@@ -65,8 +65,14 @@ function renderPlayer(playerData) {
     
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
-    playerName.innerHTML = playerData.attributes.name 
+    if(playerData.attributes.dm === true) {
+        playerName.innerHTML = `${playerData.attributes.name} (DM)` 
+    }
+    else {
+        playerName.innerHTML = playerData.attributes.name 
+    }
     playerDiv.append(playerName)
+
 
 
 
@@ -80,8 +86,7 @@ function renderPlayer(playerData) {
     addCharacterButton.addEventListener("click", (event) => {
 
         //prevent default
-        event.preventDefault
-        // debugger
+        event.preventDefault()
 
         // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
         const addConfigObj = {
@@ -234,7 +239,7 @@ function summonForm(div){
     ageInput.setAttribute('age',"age");
     ageInput.innerHTML = "Age"
 
-    var dmInput = document.createElement("INPUT");
+    var dmInput = document.createElement("input");
     dmInput.setAttribute("type", "checkbox")
     dmInput.setAttribute('name',"username");
 
@@ -242,14 +247,13 @@ function summonForm(div){
     submitButton.setAttribute('type',"submit");
     submitButton.setAttribute('value',"Submit");
 
-    // debugger
+    
 
     //add event listener to submit button
 //!!!!!!!!!!!!!!!!THIS IS WHERE I'M WORKING CURRENTLY
     submitButton.addEventListener("click", (event) => {
-        // debugger
 
-        event.preventDefault
+        event.preventDefault()
 
         const addPlayerConfigObj = {
             method: "POST",
@@ -258,7 +262,6 @@ function summonForm(div){
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                // player_id: event.target.getAttribute('button-player-id')
                 name: event.target.parentElement.childNodes[0].value,
                 gender: event.target.parentElement.childNodes[1].value,
                 age: event.target.parentElement.childNodes[2].value,
@@ -275,9 +278,7 @@ function summonForm(div){
                     alert(player.message)
                 } 
                 else {
-                    // debugger
-                    console.log(player)
-                    // renderNewPlayer()
+                    renderPlayer(player)
                 }
             })
             .catch((error) => {
@@ -327,8 +328,7 @@ function renderNewPlayer(name, gender, age, dm) {
     addCharacterButton.addEventListener("click", (event) => {
 
         //prevent default
-        event.preventDefault
-        // debugger
+        event.preventDefault()
 
         // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
         const addConfigObj = {
