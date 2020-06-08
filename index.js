@@ -15,9 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
             title.innerText = "Random Character Generator"
             document.querySelector("body").append(title)
 
+
+            //CREATE PLAYER BUTTON\\
             //create createPlayer div and button and add to DOM
             let createPlayerButtonDiv = document.createElement("div")
-
             let createPlayerButton = document.createElement("button")
             createPlayerButton.innerHTML = "Add Player"
 
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             createPlayerButtonDiv.append(createPlayerButton)
             document.querySelector("body").append(createPlayerButtonDiv)
-
+            //\\CREATE PLAYER BUTTON//
             
 
             renderPlayers(players.data)
@@ -42,9 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //RENDER ALL PLAYERS
 function renderPlayers(playersData) {
-    // console.log(playersData)
     playersData.forEach(player => {
-        // console.log("rendering a player")
         renderPlayer(player);
     });
 }
@@ -91,7 +90,6 @@ function renderPlayer(playerData) {
             },
             body: JSON.stringify({
                 player_id: event.target.getAttribute('button-player-id')
-                // trainer_id: event.target.dataset.trainerId
             })
         }
 
@@ -105,8 +103,6 @@ function renderPlayer(playerData) {
                     else {
                         const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
                         renderCharacter(character, div)
-                        console.log(character)
-                        console.log("")
                     }
                 })
                 .catch((error) => {
@@ -260,7 +256,7 @@ function summonForm(div){
         }
 
         //
-        fetch("PLAYERS_URL", addPlayerConfigObj)
+        fetch(PLAYERS_URL, addPlayerConfigObj)
             .then(resp => resp.json())
             .then(player => {
                 if (player.message) {
@@ -284,81 +280,4 @@ function summonForm(div){
         div.append(form)
 
 
-}
-
-
-
-
-
-
-function renderNewPlayer(name, gender, age, dm) {
-    //create playerDiv
-    let playerDiv = document.createElement("div");
-
-    //add attributes to playerDiv
-    playerDiv.classList.add(`player-id-${playerData.id}`)
-    playerDiv.setAttribute("player-id", `${playerData.id}`)
-    
-    //create and add playerName (h2) to the div
-    let playerName = document.createElement("h2");
-    playerName.innerHTML = playerData.attributes.name 
-    playerDiv.append(playerName)
-
-
-
-    //BUTTON\\
-    //create addCharacter button
-    let addCharacterButton = document.createElement("button")
-    addCharacterButton.innerHTML = "Add New Character"
-    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
-
-    //create event listener for the addCharacter button
-    addCharacterButton.addEventListener("click", (event) => {
-
-        //prevent default
-        event.preventDefault()
-
-        // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
-        const addConfigObj = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                player_id: event.target.getAttribute('button-player-id')
-                // trainer_id: event.target.dataset.trainerId
-            })
-        }
-
-        //
-        fetch("http://localhost:3000/api/characters", addConfigObj)
-                .then(resp => resp.json())
-                .then(character => {
-                    if (character.message) {
-                        alert(character.message)
-                    } 
-                    else {
-                        const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
-                        renderCharacter(character, div)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        
-    });
-     
-    //add addCharacter button to the div
-    playerDiv.append(addCharacterButton)
-    //\\BUTTON//
-
-
-
-    
-    //render characters
-    renderCharacters(playerData.attributes.characters, playerDiv)
-
-    //add playerDiv to the body
-    document.querySelector("body").append(playerDiv)
 }
