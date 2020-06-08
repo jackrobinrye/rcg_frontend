@@ -1,7 +1,5 @@
 CSS 
 
-
-
 table.paleBlueRows {
   font-family: Georgia, serif;
   border: 0px solid #FFFFFF;
@@ -30,20 +28,3 @@ table.paleBlueRows tfoot td {
 
 
 
-//player not from form 
-{id: "1", type: "player", attributes: {…}}
-attributes: {name: "Jack", age: 25, gender: "agender", characters: Array(4)}
-id: "1"
-type: "player"
-__proto__: Object
-{{id: player.id}, ...player.attributes}
-
-//player from form 
-{id: 6, name: "asdf", age: 23, gender: "sadf", created_at: "2020-06-08T17:56:29.053Z", …}
-age: 23
-created_at: "2020-06-08T17:56:29.053Z"
-gender: "sadf"
-id: 6
-name: "asdf"
-updated_at: "2020-06-08T17:56:29.053Z"
-__proto__: Object

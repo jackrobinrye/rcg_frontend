@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
 //RENDER ALL PLAYERS
 function renderPlayers(playersData) {
     playersData.forEach(player => {
-        renderPlayer(player);
+        const playerData = {...{id: player.id}, ...player.attributes}
+        renderPlayer(playerData);
     });
 }
 
@@ -63,7 +64,7 @@ function renderPlayer(playerData) {
     
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
-    playerName.innerHTML = playerData.attributes.name 
+    playerName.innerHTML = `${playerData.name} (${playerData.age}, ${playerData.gender})` 
     playerDiv.append(playerName)
 
 
@@ -119,7 +120,9 @@ function renderPlayer(playerData) {
 
     
     //RENDER ALL CHARACTERS METHOD CALL
-    renderCharacters(playerData.attributes.characters, playerDiv)
+    if(playerData.characters){
+        renderCharacters(playerData.characters, playerDiv)
+    }
     
 
 
