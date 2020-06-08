@@ -1,7 +1,5 @@
 CSS 
 
-
-
 table.paleBlueRows {
   font-family: Georgia, serif;
   border: 0px solid #FFFFFF;
@@ -26,3 +24,7 @@ table.paleBlueRows tr:nth-child(even) {
 table.paleBlueRows tfoot td {
   font-size: 14px;
 }
+
+
+
+
