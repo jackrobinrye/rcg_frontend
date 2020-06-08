@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             
 
-
             renderPlayers(players.data)
         })
     }
@@ -65,12 +64,7 @@ function renderPlayer(playerData) {
     
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
-    if(playerData.attributes.dm === true) {
-        playerName.innerHTML = `${playerData.attributes.name} (DM)` 
-    }
-    else {
-        playerName.innerHTML = playerData.attributes.name 
-    }
+    playerName.innerHTML = playerData.attributes.name 
     playerDiv.append(playerName)
 
 
@@ -239,10 +233,6 @@ function summonForm(div){
     ageInput.setAttribute('age',"age");
     ageInput.innerHTML = "Age"
 
-    var dmInput = document.createElement("input");
-    dmInput.setAttribute("type", "checkbox")
-    dmInput.setAttribute('name',"username");
-
     let submitButton = document.createElement("input"); //input element, submit button
     submitButton.setAttribute('type',"submit");
     submitButton.setAttribute('value',"Submit");
@@ -264,14 +254,13 @@ function summonForm(div){
             body: JSON.stringify({
                 name: event.target.parentElement.childNodes[0].value,
                 gender: event.target.parentElement.childNodes[1].value,
-                age: event.target.parentElement.childNodes[2].value,
-                dm: event.target.parentElement.childNodes[3].value
+                age: event.target.parentElement.childNodes[2].value
 
             })
         }
 
         //
-        fetch("http://localhost:3000/api/players", addPlayerConfigObj)
+        fetch("PLAYERS_URL", addPlayerConfigObj)
             .then(resp => resp.json())
             .then(player => {
                 if (player.message) {
@@ -291,7 +280,6 @@ function summonForm(div){
         form.append(nameInput);
         form.append(genderInput);
         form.append(ageInput);
-        form.append(dmInput);
         form.append(submitButton);
         div.append(form)
 
@@ -353,8 +341,6 @@ function renderNewPlayer(name, gender, age, dm) {
                     else {
                         const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
                         renderCharacter(character, div)
-                        console.log(character)
-                        console.log("")
                     }
                 })
                 .catch((error) => {
