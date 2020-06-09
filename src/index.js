@@ -45,7 +45,6 @@ function renderPlayers(playersData) {
 function renderPlayer(player) {
     let playerDiv = document.createElement("div");
     playerDiv.classList.add(`player-id-${player.id}`)
-    playerDiv.setAttribute("player-id", `${player.id}`)
     
     let playerName = document.createElement("h1");
     playerName.classList.add("playerName")
@@ -97,8 +96,6 @@ function renderPlayer(player) {
 
 
 function renderCharacters(charactersData, div) {
-    let charactersDiv = document.createElement("div")
-    charactersDiv.classList.add("characters")
 
     charactersData.forEach(character => {
         let characterObj = new Character(character)
@@ -110,7 +107,6 @@ function renderCharacters(charactersData, div) {
 function renderCharacter(characterObj, div) {
     characterDiv = document.createElement("div")
     characterDiv.classList.add("character")
-    characterDiv.setAttribute("character-id", `${characterObj.id}`)
 
     characterName = document.createElement("h3")
     characterName.innerHTML = characterObj.name
