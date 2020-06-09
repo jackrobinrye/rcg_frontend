@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderPlayers(playersData) {
     playersData.forEach(player => {
         const playerData = {...{id: player.id}, ...player.attributes}
-        renderPlayer(playerData);
+        p = new Player(playerData)
+        renderPlayer(p);
     });
 }
 
@@ -53,17 +54,17 @@ function renderPlayers(playersData) {
 
 
 //RENDER SINGLE PLAYER
-function renderPlayer(playerData) {
+function renderPlayer(player) {
     //create playerDiv
     let playerDiv = document.createElement("div");
 
     //add attributes to playerDiv
-    playerDiv.classList.add(`player-id-${playerData.id}`)
-    playerDiv.setAttribute("player-id", `${playerData.id}`)
+    playerDiv.classList.add(`player-id-${player.id}`)
+    playerDiv.setAttribute("player-id", `${player.id}`)
     
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
-    playerName.innerHTML = `${playerData.name} (${playerData.age}, ${playerData.gender})` 
+    playerName.innerHTML = `${player.name} (${player.age}, ${player.gender})` 
     playerDiv.append(playerName)
 
 
@@ -73,7 +74,7 @@ function renderPlayer(playerData) {
     //create addCharacter button
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
-    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
+    addCharacterButton.setAttribute("button-player-id", `${player.id}`)
 
     //create event listener for the addCharacter button
     addCharacterButton.addEventListener("click", (event) => {
@@ -119,8 +120,8 @@ function renderPlayer(playerData) {
 
     
     //RENDER ALL CHARACTERS METHOD CALL
-    if(playerData.characters){
-        renderCharacters(playerData.characters, playerDiv)
+    if(player.characters){
+        renderCharacters(player.characters, playerDiv)
     }
     
 
@@ -178,13 +179,18 @@ function renderCharacter(characterObj, div) {
     for (key in characterObj){
         cData.push({[key]: characterObj[key]})
     }
-    debugger 
 
     for (let i = 0; i < 5; i++) {
         let tr = document.createElement("tr")
             for (let j = i*3; j<i*3+3; j++){
                 for (key in cData[j]){
-                    if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {}
+                    if (key === "id" || key === "player_id" || key === "name") {}
+                    else if (key === "cclass") {
+                        value = cData[j][key]
+                        let td = document.createElement("td")
+                        td.innerHTML = `class: ${value}`
+                        tr.append(td)
+                    }
                     else {
                         value = cData[j][key]
                         let td = document.createElement("td")
@@ -232,7 +238,6 @@ function summonForm(div){
     
 
     //add event listener to submit button
-//!!!!!!!!!!!!!!!!THIS IS WHERE I'M WORKING CURRENTLY
     submitButton.addEventListener("click", (event) => {
 
         event.preventDefault()
@@ -244,6 +249,7 @@ function summonForm(div){
                 "Accept": "application/json"
             },
             body: JSON.stringify({
+                //!!!!!!!!!!is there a cleaner way to do this?
                 name: event.target.parentElement.childNodes[0].value,
                 gender: event.target.parentElement.childNodes[1].value,
                 age: event.target.parentElement.childNodes[2].value
@@ -251,7 +257,7 @@ function summonForm(div){
             })
         }
 
-        //
+        //fetch to render newly created player
         fetch(PLAYERS_URL, addPlayerConfigObj)
             .then(resp => resp.json())
             .then(player => {
@@ -259,7 +265,9 @@ function summonForm(div){
                     alert(player.message)
                 } 
                 else {
+                    //render newly created player
                     renderPlayer(player)
+                    div.removeChild(form)
                 }
             })
             .catch((error) => {

@@ -5,7 +5,7 @@ class Character {
         this.player_id = data.player_id
         this.name = data.name
         this.race = data.race
-        this.class = data.cclass
+        this.cclass = data.cclass
         this.gender = data.gender
         this.background = data.background
         this.alignment = data.alignment
