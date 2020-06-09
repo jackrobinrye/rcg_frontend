@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(PLAYERS_URL)
         .then(response => response.json())
         .then(players => {
-            //create title and add to DOM
             let title = document.createElement("h1")
             title.classList.add("title")
             title.innerText = "Random Character Generator"
@@ -13,21 +12,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             //CREATE PLAYER BUTTON\\
-            //create createPlayer div and button and add to DOM
             let createPlayerButtonDiv = document.createElement("div")
             createPlayerButtonDiv.classList.add("createPlayerButtonDiv")
             let createPlayerButton = document.createElement("button")
             createPlayerButton.innerHTML = "Add Player"
 
-            //create event listener for the createPlayerButton 
             createPlayerButton.addEventListener("click", event => {
                 summonForm(event.target.parentElement)
             })
 
-            //append the button and divv
             createPlayerButtonDiv.append(createPlayerButton)
             document.querySelector("body").append(createPlayerButtonDiv)
-            //\\CREATE PLAYER BUTTON//
+            //\\END CREATE PLAYER BUTTON//
             
             
             renderPlayers(players.data)
@@ -37,10 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
 )
 
 
-
-
-
-//RENDER ALL PLAYERS
 function renderPlayers(playersData) {
     playersData.forEach(player => {
         const playerData = {...{id: player.id}, ...player.attributes}
@@ -50,40 +42,22 @@ function renderPlayers(playersData) {
 }
 
 
-
-
-//RENDER SINGLE PLAYER
 function renderPlayer(player) {
-    //create playerDiv
     let playerDiv = document.createElement("div");
-
-    //add attributes to playerDiv
     playerDiv.classList.add(`player-id-${player.id}`)
     playerDiv.setAttribute("player-id", `${player.id}`)
     
-    //create and add playerName (h2) to the div
     let playerName = document.createElement("h1");
     playerName.classList.add("playerName")
-
     playerName.innerHTML = `${player.name} (${player.age}, ${player.gender})` 
     playerDiv.append(playerName)
 
-
-
-
-    //BUTTON FOR ADD CHARACTER WITHIN RENDER PLAYER\\
-    //create addCharacter button
+    //ADD CHARACTER BUTTON\\
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
     addCharacterButton.setAttribute("button-player-id", `${player.id}`)
-
-    //create event listener for the addCharacter button
     addCharacterButton.addEventListener("click", (event) => {
-
-        //prevent default
         event.preventDefault()
-
-        // STILL DON'T UNDERSTAND THIS FULLY ASK QUESTIONS
         const addConfigObj = {
             method: "POST",
             headers: {
@@ -95,7 +69,6 @@ function renderPlayer(player) {
             })
         }
 
-        //
         fetch("http://localhost:3000/api/characters", addConfigObj)
                 .then(resp => resp.json())
                 .then(character => {
@@ -110,41 +83,23 @@ function renderPlayer(player) {
                 .catch((error) => {
                     console.log(error)
                 })
-        
     });
      
-    //add addCharacter button to the div
     playerDiv.append(addCharacterButton)
-    //\\BUTTON//
+    //\\END ADD CHARACTER BUTTON//
 
-
-
-    
-    //RENDER ALL CHARACTERS METHOD CALL
     if(player.characters){
         renderCharacters(player.characters, playerDiv)
     }
     
-
-
-
-    //add playerDiv to the body
     document.querySelector("body").append(playerDiv)
 }
 
 
-
-
-
-//RENDER ALL CHARACTERS DEFINITION
 function renderCharacters(charactersData, div) {
-    //create a charactersDiv
     let charactersDiv = document.createElement("div")
-
-    //give charactersDiv attributes
     charactersDiv.classList.add("characters")
 
-    //loop through characters and render each individual character
     charactersData.forEach(character => {
         let characterObj = new Character(character)
         renderCharacter(characterObj, div)
@@ -152,27 +107,18 @@ function renderCharacters(charactersData, div) {
 }
 
 
-
-
-//RENDER SINGLE CHARACTER
 function renderCharacter(characterObj, div) {
-    //create a characterDiv
     characterDiv = document.createElement("div")
-
-    //give the characterDiv attributes
     characterDiv.classList.add("character")
     characterDiv.setAttribute("character-id", `${characterObj.id}`)
 
-    //create and add name (h3) to the div
     characterName = document.createElement("h3")
     characterName.innerHTML = characterObj.name
     characterDiv.append(characterName)
 
-    // //create a table
     const tbl = document.createElement("table")
     tbl.classList.add("paleBlueRows")
 
-    // //create the table body
     let tBody = document.createElement("tbody")
     let cData = []
     for (key in characterObj){
@@ -199,17 +145,13 @@ function renderCharacter(characterObj, div) {
                 }
             }   
             tBody.append(tr)
-        // }
     }
     tbl.append(tBody)
     characterDiv.append(tbl)
-
-    //add the final stuff to the playerDiv
     div.append(characterDiv)
 }
 
 
-//summonForm 
 function summonForm(div){
     let form = document.createElement("form")
     form.setAttribute('method',"post");
@@ -233,10 +175,6 @@ function summonForm(div){
     let submitButton = document.createElement("input"); //input element, submit button
     submitButton.setAttribute('type',"submit");
     submitButton.setAttribute('value',"Submit");
-
-    
-
-    //add event listener to submit button
     submitButton.addEventListener("click", (event) => {
 
         event.preventDefault()
@@ -256,7 +194,6 @@ function summonForm(div){
             })
         }
 
-        //fetch to render newly created player
         fetch(PLAYERS_URL, addPlayerConfigObj)
             .then(resp => resp.json())
             .then(player => {
@@ -264,7 +201,6 @@ function summonForm(div){
                     alert(player.message)
                 } 
                 else {
-                    //render newly created player
                     renderPlayer(player)
                     div.removeChild(form)
                 }
@@ -272,15 +208,11 @@ function summonForm(div){
             .catch((error) => {
                 console.log(error)
             })
-
-            
         })
-        
+
         form.append(nameInput);
         form.append(genderInput);
         form.append(ageInput);
         form.append(submitButton);
         div.append(form)
-
-
 }
