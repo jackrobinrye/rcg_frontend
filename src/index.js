@@ -116,6 +116,7 @@ function renderCharacter(characterObj, div) {
     tbl.classList.add("paleBlueRows")
 
     let tBody = document.createElement("tbody")
+
     let cData = []
     for (key in characterObj){
         cData.push({[key]: characterObj[key]})
@@ -156,17 +157,17 @@ function summonForm(div){
     let nameInput = document.createElement("input"); //input element, text
     nameInput.setAttribute('type',"text");
     nameInput.setAttribute('name',"name");
-    nameInput.innerText = "Name"
+    nameInput.placeholder = "Name"
     
     let genderInput = document.createElement("input"); //input element, text
     genderInput.setAttribute('type',"text");
     genderInput.setAttribute('gender',"gender");
-    genderInput.innerHTML = "Gender"
+    genderInput.placeholder = "Gender"
     
     let ageInput = document.createElement("input"); //input element, text
     ageInput.setAttribute('type',"number");
     ageInput.setAttribute('age',"age");
-    ageInput.innerHTML = "Age"
+    ageInput.placeholder = "Age"
 
     let submitButton = document.createElement("input"); //input element, submit button
     submitButton.setAttribute('type',"submit");
