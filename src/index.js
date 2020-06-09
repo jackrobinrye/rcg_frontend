@@ -1,7 +1,6 @@
 PLAYERS_URL = "http://localhost:3000/api/players"
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("loaded")
 
     function fetchPlayers() {
         fetchPlayers()
@@ -145,7 +144,8 @@ function renderCharacters(charactersData, div) {
 
     //loop through characters and render each individual character
     charactersData.forEach(character => {
-        renderCharacter(character, div)
+        let characterObj = new Character(character)
+        renderCharacter(characterObj, div)
     })
 
     //return the charactersDiv to be appended to the playerDiv above
@@ -156,17 +156,17 @@ function renderCharacters(charactersData, div) {
 
 
 //RENDER SINGLE CHARACTER
-function renderCharacter(characterData, div) {
+function renderCharacter(characterObj, div) {
     //create a characterDiv
     characterDiv = document.createElement("div")
 
     //give the characterDiv attributes
     characterDiv.classList.add("character")
-    characterDiv.setAttribute("character-id", `${characterData.id}`)
+    characterDiv.setAttribute("character-id", `${characterObj.id}`)
 
     //create and add name (h3) to the div
     characterName = document.createElement("h3")
-    characterName.innerHTML = characterData.name
+    characterName.innerHTML = characterObj.name
     characterDiv.append(characterName)
 
     // //create a table
@@ -174,24 +174,17 @@ function renderCharacter(characterData, div) {
 
     // //create the table body
     let tBody = document.createElement("tbody")
-    
     let cData = []
-    for (key in characterData){
-        cData.push({[key]: characterData[key]})
+    for (key in characterObj){
+        cData.push({[key]: characterObj[key]})
     }
+    debugger 
 
     for (let i = 0; i < 5; i++) {
         let tr = document.createElement("tr")
             for (let j = i*3; j<i*3+3; j++){
                 for (key in cData[j]){
-                    if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
-                    }
-                    else if(key === "cclass"){
-                        value = cData[j][key]
-                        let td = document.createElement("td")
-                        td.innerHTML = `class: ${value}`
-                        tr.append(td)
-                    }
+                    if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {}
                     else {
                         value = cData[j][key]
                         let td = document.createElement("td")
