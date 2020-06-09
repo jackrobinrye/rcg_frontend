@@ -149,9 +149,6 @@ function renderCharacters(charactersData, div) {
         let characterObj = new Character(character)
         renderCharacter(characterObj, div)
     })
-
-    //return the charactersDiv to be appended to the playerDiv above
-    return charactersDiv
 }
 
 
