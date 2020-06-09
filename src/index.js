@@ -1,11 +1,6 @@
 PLAYERS_URL = "http://localhost:3000/api/players"
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("loaded")
-
-    function fetchPlayers() {
-        fetchPlayers()
-    }
 
     fetch(PLAYERS_URL)
         .then(response => response.json())
@@ -24,13 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             //create event listener for the createPlayerButton 
             createPlayerButton.addEventListener("click", event => {
-                summonForm(event.target.parentElement)});
+                summonForm(event.target.parentElement)
+            })
 
+            //append the button and divv
             createPlayerButtonDiv.append(createPlayerButton)
             document.querySelector("body").append(createPlayerButtonDiv)
             //\\CREATE PLAYER BUTTON//
             
-
+            
             renderPlayers(players.data)
         })
     }
@@ -45,26 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderPlayers(playersData) {
     playersData.forEach(player => {
         const playerData = {...{id: player.id}, ...player.attributes}
-        renderPlayer(playerData);
+        p = new Player(playerData)
+        renderPlayer(p);
     });
 }
 
 
 
 
-
 //RENDER SINGLE PLAYER
-function renderPlayer(playerData) {
+function renderPlayer(player) {
     //create playerDiv
     let playerDiv = document.createElement("div");
 
     //add attributes to playerDiv
-    playerDiv.classList.add(`player-id-${playerData.id}`)
-    playerDiv.setAttribute("player-id", `${playerData.id}`)
+    playerDiv.classList.add(`player-id-${player.id}`)
+    playerDiv.setAttribute("player-id", `${player.id}`)
     
     //create and add playerName (h2) to the div
     let playerName = document.createElement("h2");
-    playerName.innerHTML = `${playerData.name} (${playerData.age}, ${playerData.gender})` 
+    playerName.innerHTML = `${player.name} (${player.age}, ${player.gender})` 
     playerDiv.append(playerName)
 
 
@@ -74,7 +71,7 @@ function renderPlayer(playerData) {
     //create addCharacter button
     let addCharacterButton = document.createElement("button")
     addCharacterButton.innerHTML = "Add New Character"
-    addCharacterButton.setAttribute("button-player-id", `${playerData.id}`)
+    addCharacterButton.setAttribute("button-player-id", `${player.id}`)
 
     //create event listener for the addCharacter button
     addCharacterButton.addEventListener("click", (event) => {
@@ -120,8 +117,8 @@ function renderPlayer(playerData) {
 
     
     //RENDER ALL CHARACTERS METHOD CALL
-    if(playerData.characters){
-        renderCharacters(playerData.characters, playerDiv)
+    if(player.characters){
+        renderCharacters(player.characters, playerDiv)
     }
     
 
@@ -145,7 +142,8 @@ function renderCharacters(charactersData, div) {
 
     //loop through characters and render each individual character
     charactersData.forEach(character => {
-        renderCharacter(character, div)
+        let characterObj = new Character(character)
+        renderCharacter(characterObj, div)
     })
 
     //return the charactersDiv to be appended to the playerDiv above
@@ -156,17 +154,17 @@ function renderCharacters(charactersData, div) {
 
 
 //RENDER SINGLE CHARACTER
-function renderCharacter(characterData, div) {
+function renderCharacter(characterObj, div) {
     //create a characterDiv
     characterDiv = document.createElement("div")
 
     //give the characterDiv attributes
     characterDiv.classList.add("character")
-    characterDiv.setAttribute("character-id", `${characterData.id}`)
+    characterDiv.setAttribute("character-id", `${characterObj.id}`)
 
     //create and add name (h3) to the div
     characterName = document.createElement("h3")
-    characterName.innerHTML = characterData.name
+    characterName.innerHTML = characterObj.name
     characterDiv.append(characterName)
 
     // //create a table
@@ -174,19 +172,17 @@ function renderCharacter(characterData, div) {
 
     // //create the table body
     let tBody = document.createElement("tbody")
-    
     let cData = []
-    for (key in characterData){
-        cData.push({[key]: characterData[key]})
+    for (key in characterObj){
+        cData.push({[key]: characterObj[key]})
     }
 
     for (let i = 0; i < 5; i++) {
         let tr = document.createElement("tr")
             for (let j = i*3; j<i*3+3; j++){
                 for (key in cData[j]){
-                    if (key === "id" || key === "player_id" || key === "name" || key === "created_at" || key === "updated_at") {
-                    }
-                    else if(key === "cclass"){
+                    if (key === "id" || key === "player_id" || key === "name") {}
+                    else if (key === "cclass") {
                         value = cData[j][key]
                         let td = document.createElement("td")
                         td.innerHTML = `class: ${value}`
@@ -239,7 +235,6 @@ function summonForm(div){
     
 
     //add event listener to submit button
-//!!!!!!!!!!!!!!!!THIS IS WHERE I'M WORKING CURRENTLY
     submitButton.addEventListener("click", (event) => {
 
         event.preventDefault()
@@ -251,6 +246,7 @@ function summonForm(div){
                 "Accept": "application/json"
             },
             body: JSON.stringify({
+                //!!!!!!!!!!is there a cleaner way to do this?
                 name: event.target.parentElement.childNodes[0].value,
                 gender: event.target.parentElement.childNodes[1].value,
                 age: event.target.parentElement.childNodes[2].value
@@ -258,7 +254,7 @@ function summonForm(div){
             })
         }
 
-        //
+        //fetch to render newly created player
         fetch(PLAYERS_URL, addPlayerConfigObj)
             .then(resp => resp.json())
             .then(player => {
@@ -266,7 +262,9 @@ function summonForm(div){
                     alert(player.message)
                 } 
                 else {
+                    //render newly created player
                     renderPlayer(player)
+                    div.removeChild(form)
                 }
             })
             .catch((error) => {
