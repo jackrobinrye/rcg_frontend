@@ -2,10 +2,6 @@ PLAYERS_URL = "http://localhost:3000/api/players"
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    function fetchPlayers() {
-        fetchPlayers()
-    }
-
     fetch(PLAYERS_URL)
         .then(response => response.json())
         .then(players => {
@@ -23,13 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             //create event listener for the createPlayerButton 
             createPlayerButton.addEventListener("click", event => {
-                summonForm(event.target.parentElement)});
+                summonForm(event.target.parentElement)
+            })
 
+            //append the button and divv
             createPlayerButtonDiv.append(createPlayerButton)
             document.querySelector("body").append(createPlayerButtonDiv)
             //\\CREATE PLAYER BUTTON//
             
-
+            
             renderPlayers(players.data)
         })
     }
@@ -48,7 +46,6 @@ function renderPlayers(playersData) {
         renderPlayer(p);
     });
 }
-
 
 
 
