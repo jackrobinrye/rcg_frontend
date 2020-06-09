@@ -1,4 +1,3 @@
-console.log("in character.js")
 class Character {
     constructor(data) {
         this.id = data.id

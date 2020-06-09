@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(players => {
             //create title and add to DOM
             let title = document.createElement("h1")
+            title.classList.add("title")
             title.innerText = "Random Character Generator"
             document.querySelector("body").append(title)
 
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //CREATE PLAYER BUTTON\\
             //create createPlayer div and button and add to DOM
             let createPlayerButtonDiv = document.createElement("div")
+            createPlayerButtonDiv.classList.add("createPlayerButtonDiv")
             let createPlayerButton = document.createElement("button")
             createPlayerButton.innerHTML = "Add Player"
 
@@ -60,7 +62,9 @@ function renderPlayer(player) {
     playerDiv.setAttribute("player-id", `${player.id}`)
     
     //create and add playerName (h2) to the div
-    let playerName = document.createElement("h2");
+    let playerName = document.createElement("h1");
+    playerName.classList.add("playerName")
+
     playerName.innerHTML = `${player.name} (${player.age}, ${player.gender})` 
     playerDiv.append(playerName)
 
@@ -169,6 +173,7 @@ function renderCharacter(characterObj, div) {
 
     // //create a table
     const tbl = document.createElement("table")
+    tbl.classList.add("paleBlueRows")
 
     // //create the table body
     let tBody = document.createElement("tbody")

@@ -1,4 +1,3 @@
-console.log("in player.js")
 class Player {
 
     constructor(data) {
