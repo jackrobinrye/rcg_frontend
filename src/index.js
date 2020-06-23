@@ -98,8 +98,7 @@ function renderPlayer(player) {
 function renderCharacters(charactersData, div) {
 
     charactersData.forEach(character => {
-        let characterObj = new Character(character)
-        renderCharacter(characterObj, div)
+        renderCharacter(character, div)
     })
 }
 
@@ -154,22 +153,22 @@ function summonForm(div){
     form.setAttribute('method',"post");
     form.setAttribute('action',"submit.php");
 
-    let nameInput = document.createElement("input"); //input element, text
+    let nameInput = document.createElement("input"); 
     nameInput.setAttribute('type',"text");
     nameInput.setAttribute('name',"name");
     nameInput.placeholder = "Name"
     
-    let genderInput = document.createElement("input"); //input element, text
+    let genderInput = document.createElement("input");
     genderInput.setAttribute('type',"text");
     genderInput.setAttribute('gender',"gender");
     genderInput.placeholder = "Gender"
     
-    let ageInput = document.createElement("input"); //input element, text
+    let ageInput = document.createElement("input"); 
     ageInput.setAttribute('type',"number");
     ageInput.setAttribute('age',"age");
     ageInput.placeholder = "Age"
 
-    let submitButton = document.createElement("input"); //input element, submit button
+    let submitButton = document.createElement("input"); 
     submitButton.setAttribute('type',"submit");
     submitButton.setAttribute('value',"Submit");
     submitButton.addEventListener("click", (event) => {
@@ -183,7 +182,6 @@ function summonForm(div){
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                //!!!!!!!!!!is there a cleaner way to do this?
                 name: event.target.parentElement.childNodes[0].value,
                 gender: event.target.parentElement.childNodes[1].value,
                 age: event.target.parentElement.childNodes[2].value
