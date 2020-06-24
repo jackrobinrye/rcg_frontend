@@ -3,8 +3,6 @@ PLAYERS_URL = "http://localhost:3000/api/players"
 //fetch requests
 //asynch  -- promises
 
-//use those classes
-
 fetch(PLAYERS_URL)
 .then(response => response.json())
 .then(players => {

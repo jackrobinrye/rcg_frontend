@@ -39,7 +39,7 @@ class Character {
         for (let i = 0; i < 5; i++) {
             let tr = document.createElement("tr")
                 for (let j = i*3; j<i*3+3; j++){
-                    let thisKey = Object.keys(cData[j]) 
+                    let thisKey = Object.keys(cData[j])[0] 
                     let value;
                     if (thisKey === "id" || thisKey === "player_id" || thisKey === "name") {}
                     else if (thisKey === "cclass") {
