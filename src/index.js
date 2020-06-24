@@ -55,61 +55,8 @@ function renderPlayers(playersData) {
     playersData.forEach(player => {
         const playerData = {...{id: player.id}, ...player.attributes}
         p = new Player(playerData)
-        renderPlayer(p);
+        p.render();
     });
-}
-
-
-function renderPlayer(player) {
-    let playerDiv = document.createElement("div");
-    playerDiv.classList.add(`player-id-${player.id}`)
-    
-    let playerName = document.createElement("h1");
-    playerName.classList.add("playerName")
-    playerName.innerHTML = `${player.name} (${player.age}, ${player.gender})` 
-    playerDiv.append(playerName)
-
-    //ADD CHARACTER BUTTON\\
-    let addCharacterButton = document.createElement("button")
-    addCharacterButton.innerHTML = "Add New Character"
-    addCharacterButton.setAttribute("button-player-id", `${player.id}`)
-    addCharacterButton.addEventListener("click", (event) => {
-        event.preventDefault()
-        const addConfigObj = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                player_id: event.target.getAttribute('button-player-id')
-            })
-        }
-
-        fetch("http://localhost:3000/api/characters", addConfigObj)
-                .then(resp => resp.json())
-                .then(character => {
-                    if (character.message) {
-                        alert(character.message)
-                    } 
-                    else {
-                        const div = document.getElementsByClassName(`player-id-${character.player_id}`)[0]
-                        renderCharacter(character, div)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-    });
-     
-    playerDiv.append(addCharacterButton)
-    //\\END ADD CHARACTER BUTTON//
-
-    if(player.characters){
-        renderCharacters(player.characters, playerDiv)
-    }
-    
-    document.querySelector(".players-div").append(playerDiv)
 }
 
 
@@ -117,54 +64,8 @@ function renderCharacters(charactersData, div) {
 
     charactersData.forEach(character => {
         div.append(character.render())
-        // renderCharacter(character, div)
     })
 }
-
-
-// function renderCharacter(characterObj, div) {
-//     characterDiv = document.createElement("div")
-//     characterDiv.classList.add("character")
-
-//     characterName = document.createElement("h3")
-//     characterName.innerHTML = characterObj.name
-//     characterDiv.append(characterName)
-
-//     const tbl = document.createElement("table")
-//     tbl.classList.add("paleBlueRows")
-
-//     let tBody = document.createElement("tbody")
-
-//     let cData = []
-//     for (key in characterObj){
-//         cData.push({[key]: characterObj[key]})
-//     }
-
-//     for (let i = 0; i < 5; i++) {
-//         let tr = document.createElement("tr")
-//             for (let j = i*3; j<i*3+3; j++){
-//                 for (key in cData[j]){
-//                     if (key === "id" || key === "player_id" || key === "name") {}
-//                     else if (key === "cclass") {
-//                         value = cData[j][key]
-//                         let td = document.createElement("td")
-//                         td.innerHTML = `class: ${value}`
-//                         tr.append(td)
-//                     }
-//                     else {
-//                         value = cData[j][key]
-//                         let td = document.createElement("td")
-//                         td.innerHTML = `${key}: ${value}`
-//                         tr.append(td)
-//                     }
-//                 }
-//             }   
-//             tBody.append(tr)
-//     }
-//     tbl.append(tBody)
-//     characterDiv.append(tbl)
-//     div.append(characterDiv)
-// }
 
 
 function summonForm(div){
@@ -215,7 +116,8 @@ function summonForm(div){
                     alert(player.message)
                 } 
                 else {
-                    renderPlayer(player)
+                    let p = new Player(player)
+                    p.render()
                     div.removeChild(form)
                 }
             })

@@ -19,11 +19,10 @@ class Character {
     } 
 
     render() {
-        // debugger
-        characterDiv = document.createElement("div")
+        let characterDiv = document.createElement("div")
         characterDiv.classList.add("character")
     
-        characterName = document.createElement("h3")
+        let characterName = document.createElement("h3")
         characterName.innerHTML = this.name
         characterDiv.append(characterName)
     
@@ -33,34 +32,33 @@ class Character {
         let tBody = document.createElement("tbody")
     
         let cData = []
-        for (key in this){
-            cData.push({[key]: this[key]})
-        }
+        Object.keys(this).forEach(element =>
+            cData.push({[element]: this[element]})
+        )
     
         for (let i = 0; i < 5; i++) {
             let tr = document.createElement("tr")
                 for (let j = i*3; j<i*3+3; j++){
-                    for (key in cData[j]){
-                        if (key === "id" || key === "player_id" || key === "name") {}
-                        else if (key === "cclass") {
-                            value = cData[j][key]
-                            let td = document.createElement("td")
-                            td.innerHTML = `class: ${value}`
-                            tr.append(td)
-                        }
-                        else {
-                            value = cData[j][key]
-                            let td = document.createElement("td")
-                            td.innerHTML = `${key}: ${value}`
-                            tr.append(td)
-                        }
+                    let thisKey = Object.keys(cData[j]) 
+                    let value;
+                    if (thisKey === "id" || thisKey === "player_id" || thisKey === "name") {}
+                    else if (thisKey === "cclass") {
+                        value = cData[j][thisKey]
+                        let td = document.createElement("td")
+                        td.innerHTML = `class: ${value}`
+                        tr.append(td)
+                    }
+                    else {
+                        value = cData[j][thisKey]
+                        let td = document.createElement("td")
+                        td.innerHTML = `${thisKey}: ${value}`
+                        tr.append(td)
                     }
                 }   
                 tBody.append(tr)
         }
         tbl.append(tBody)
         characterDiv.append(tbl)
-        // div.append(characterDiv)
         return characterDiv
     }
 
