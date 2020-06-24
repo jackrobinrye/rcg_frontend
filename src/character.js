@@ -18,6 +18,8 @@ class Character {
         Character.all.push(this)
     } 
 
+    
+
 }
 
 Character.all = [];
