@@ -116,7 +116,8 @@ function renderPlayer(player) {
 function renderCharacters(charactersData, div) {
 
     charactersData.forEach(character => {
-        renderCharacter(character, div)
+        div.append(character.render())
+        // renderCharacter(character, div)
     })
 }
 
